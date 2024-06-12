@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 class UserAgent {
   static const MethodChannel _channel = MethodChannel('user_agent');
 
-  static Map<String, dynamic> _properties;
+  static Map<String, dynamic>? _properties;
 
   /// Initialize the module.
   ///
@@ -13,7 +13,7 @@ class UserAgent {
   ///
   /// Set [force] to true if you want to refetch the user agent properties from
   /// the native platform.
-  static Future init({force: false}) async {
+  static Future init({force = false}) async {
     if (_properties == null || force) {
       _properties =
           Map.unmodifiable(await _channel.invokeMethod('getProperties'));
@@ -28,27 +28,27 @@ class UserAgent {
 
   /// Returns the device's user agent.
   static String get userAgent {
-    return _properties['userAgent'];
+    return _properties?['userAgent'];
   }
 
   /// Returns the device's webview user agent.
   static String get webViewUserAgent {
-    return _properties['webViewUserAgent'];
+    return _properties?['webViewUserAgent'];
   }
 
   /// Fetch a [property] that can be used to build your own user agent string.
   static dynamic getProperty(String property) {
-    return _properties[property];
+    return _properties?[property];
   }
 
   /// Fetch a [property] asynchronously that can be used to build your own user agent string.
   static dynamic getPropertyAsync(String property) async {
     await init();
-    return _properties[property];
+    return _properties?[property];
   }
 
   /// Return a map of properties that can be used to generate the user agent string.
   static Map<String, dynamic> get properties {
-    return _properties;
+    return _properties ?? {};
   }
 }
